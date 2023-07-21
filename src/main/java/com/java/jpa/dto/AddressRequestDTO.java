@@ -3,6 +3,6 @@ package com.java.jpa.dto;
 import lombok.Data;
 
 @Data
-public class AddressDTORequest {
+public class AddressRequestDTO {
     private String street;
 }

@@ -1,13 +1,11 @@
 package com.java.jpa.dto;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-@Builder
-public class UserDTOResponse {
+public class UserRequestDTO {
     private String userName;
-    private List<String> street;
+    private List<AddressRequestDTO> address;
 }

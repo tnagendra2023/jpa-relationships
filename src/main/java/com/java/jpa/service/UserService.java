@@ -1,8 +1,8 @@
 package com.java.jpa.service;
 
-import com.java.jpa.dto.AddressDTORequest;
-import com.java.jpa.dto.UserDTORequest;
-import com.java.jpa.dto.UserDTOResponse;
+import com.java.jpa.dto.AddressRequestDTO;
+import com.java.jpa.dto.UserRequestDTO;
+import com.java.jpa.dto.UserResponseDTO;
 import com.java.jpa.entity.Address;
 import com.java.jpa.entity.User;
 import com.java.jpa.repository.UserRepository;
@@ -21,14 +21,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDTOResponse addUser(UserDTORequest userDTORequest){
-       User user =new User(userDTORequest.getUserName());
-        List<AddressDTORequest> requestAddress = userDTORequest.getAddress();
+    public UserResponseDTO addUser(UserRequestDTO userRequestDTO){
+       User user =new User(userRequestDTO.getUserName());
+        List<AddressRequestDTO> requestAddress = userRequestDTO.getAddress();
         List<Address> addresses=new ArrayList<>();
 
         if(!CollectionUtils.isEmpty(requestAddress)){
-            requestAddress.forEach(addressDTORequest -> {
-                Address address =new Address(addressDTORequest.getStreet(),user);
+            requestAddress.forEach(addressRequestDTO -> {
+                Address address =new Address(addressRequestDTO.getStreet(),user);
                 addresses.add(address);
             });
 
@@ -36,14 +36,14 @@ public class UserService {
         user.setAddresses(addresses);
         userRepository.save(user);
         List<String> streets = getStreets(user);
-        return UserDTOResponse.builder()
+        return UserResponseDTO.builder()
                 .userName(user.getName())
                 .street(streets)
                 .build();
     }
 
-    public List<UserDTOResponse> fetchAllUsersAndAddresses() {
-        List<UserDTOResponse> userDTOResponses = new ArrayList<>();
+    public List<UserResponseDTO> fetchAllUsersAndAddresses() {
+        List<UserResponseDTO> userResponsDTOS = new ArrayList<>();
         /* When we are calling findAll we are getting N+1 problem
            Let's say user have 2 address now user will make one query
            and Address will fire 2 times for the corresponding user
@@ -54,14 +54,14 @@ public class UserService {
         if (!CollectionUtils.isEmpty(users)) {
             users.forEach(user -> {
                 String name = user.getName();
-                UserDTOResponse userDTOResponse = UserDTOResponse.builder()
+                UserResponseDTO userResponseDTO = UserResponseDTO.builder()
                         .userName(name)
                         .street(getStreets(user))
                         .build();
-                userDTOResponses.add(userDTOResponse);
+                userResponsDTOS.add(userResponseDTO);
             });
         }
-        return userDTOResponses;
+        return userResponsDTOS;
     }
 
     public void deleteUser(Long userId){

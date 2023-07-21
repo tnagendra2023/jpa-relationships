@@ -1,9 +1,9 @@
 package com.java.jpa.service;
 
-import com.java.jpa.dto.CourseDTORequest;
-import com.java.jpa.dto.CourseDTOResponse;
-import com.java.jpa.dto.StudentDTORequest;
-import com.java.jpa.dto.StudentDTOResponse;
+import com.java.jpa.dto.CourseRequestDTO;
+import com.java.jpa.dto.CourseResponseDTO;
+import com.java.jpa.dto.StudentRequestDTO;
+import com.java.jpa.dto.StudentResponseDTO;
 import com.java.jpa.entity.Course;
 import com.java.jpa.entity.Student;
 import com.java.jpa.repository.StudentRepository;
@@ -20,43 +20,43 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public StudentDTOResponse addStudent(StudentDTORequest studentDTORequest){
-        Student student = prepareStudentRequestInfo(studentDTORequest);
+    public StudentResponseDTO addStudent(StudentRequestDTO studentRequestDTO){
+        Student student = prepareStudentRequestInfo(studentRequestDTO);
         studentRepository.save(student);
         return prepareStudentResponseInfo(student);
     }
 
-    private static Student prepareStudentRequestInfo(StudentDTORequest studentDTORequest) {
+    private static Student prepareStudentRequestInfo(StudentRequestDTO studentRequestDTO) {
         Student student=new Student();
-        student.setFirstName(studentDTORequest.getFirstName());
-        student.setLastName(studentDTORequest.getLastName());
-        student.setEmail(studentDTORequest.getEmail());
+        student.setFirstName(studentRequestDTO.getFirstName());
+        student.setLastName(studentRequestDTO.getLastName());
+        student.setEmail(studentRequestDTO.getEmail());
 
-        List<CourseDTORequest> courses = studentDTORequest.getCourses();
+        List<CourseRequestDTO> courses = studentRequestDTO.getCourses();
         List<Course> courseList=new ArrayList<>();
-        courses.forEach(courseDTORequest -> {
+        courses.forEach(courseRequestDTO -> {
             Course course=new Course();
-            course.setName(courseDTORequest.getName());
+            course.setName(courseRequestDTO.getName());
             courseList.add(course);
         });
         student.setCourses(courseList);
         return student;
     }
 
-    private static StudentDTOResponse prepareStudentResponseInfo(Student student) {
-       List<CourseDTOResponse> courseDTOResponseList=new ArrayList<>();
+    private static StudentResponseDTO prepareStudentResponseInfo(Student student) {
+       List<CourseResponseDTO> courseResponseDTOList =new ArrayList<>();
         List<Course> courses = student.getCourses();
-        courses.forEach(course -> courseDTOResponseList.add(CourseDTOResponse.builder()
+        courses.forEach(course -> courseResponseDTOList.add(CourseResponseDTO.builder()
                 .id(course.getId())
                 .name(course.getName())
                 .build()));
 
-        return StudentDTOResponse.builder()
+        return StudentResponseDTO.builder()
                 .id(student.getId())
                 .firstName(student.getFirstName())
                 .lastName(student.getLastName())
                 .email(student.getEmail())
-                .courses(courseDTOResponseList)
+                .courses(courseResponseDTOList)
                 .build();
     }
 }

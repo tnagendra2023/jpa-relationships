@@ -1,7 +1,7 @@
 package com.java.jpa.controller;
 
-import com.java.jpa.dto.UserDTORequest;
-import com.java.jpa.dto.UserDTOResponse;
+import com.java.jpa.dto.UserRequestDTO;
+import com.java.jpa.dto.UserResponseDTO;
 import com.java.jpa.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +24,8 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<UserDTOResponse> addUser(@RequestBody UserDTORequest userDTORequest){
-        return new ResponseEntity<>(userService.addUser(userDTORequest), HttpStatus.CREATED);
+    public ResponseEntity<UserResponseDTO> addUser(@RequestBody UserRequestDTO userRequestDTO){
+        return new ResponseEntity<>(userService.addUser(userRequestDTO), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDTOResponse>> getAllUsersAndAddress(){
+    public ResponseEntity<List<UserResponseDTO>> getAllUsersAndAddress(){
         return new ResponseEntity<>(userService.fetchAllUsersAndAddresses(),HttpStatus.OK);
     }
 

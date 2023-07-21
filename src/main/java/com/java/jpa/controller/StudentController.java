@@ -1,7 +1,7 @@
 package com.java.jpa.controller;
 
-import com.java.jpa.dto.StudentDTORequest;
-import com.java.jpa.dto.StudentDTOResponse;
+import com.java.jpa.dto.StudentRequestDTO;
+import com.java.jpa.dto.StudentResponseDTO;
 import com.java.jpa.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentDTOResponse> addStudent(@RequestBody StudentDTORequest studentDTORequest) {
-        return new ResponseEntity<>(studentService.addStudent(studentDTORequest), HttpStatus.CREATED);
+    public ResponseEntity<StudentResponseDTO> addStudent(@RequestBody StudentRequestDTO studentRequestDTO) {
+        return new ResponseEntity<>(studentService.addStudent(studentRequestDTO), HttpStatus.CREATED);
     }
 }
